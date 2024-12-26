@@ -1,15 +1,20 @@
 from pyrogram import Client, filters
 import os
+import random
 import asyncio
 from traceback import print_exc
 from subprocess import PIPE, STDOUT
 from time import time
 
-api_id = os.environ['API_ID']
-api_hash = os.environ['API_HASH']
-bot_token = os.environ['BOT_TOKEN']
+api_id = os.environ['23050566']
+api_hash = os.environ['25e954ccd4afb778eea69bd6754275ff']
+bot_token = os.environ['7822226324:AAEIqcv28GIu7wMWLe3FyvXtuWi22lcJvo0']
 
 app = Client('m3u8', api_id, api_hash, bot_token=bot_token)
+
+PICS = [
+ "http://ibb.co/RbJhVQ6",
+]
 
 @app.on_message(filters.command('start'))
 async def start(client, message):
@@ -63,9 +68,9 @@ async def convert(client, message):
             stderr=STDOUT
         )
         duration, _ = await proc3.communicate()
-        await _info.edit('Telegrama yükleniyor...')
+        await _info.edit('Uploading to Telegram...')
 
-        await _info.edit("Dosya Telegram'a yükleniyor...")
+        await _info.edit("File uploading to Telegram...")
         def progress(current, total):
             print(message.from_user.first_name, ' -> ', current, '/', total, sep='')
         await client.send_video(message.chat.id, f'{filename}.mp4', duration=int(duration.decode()), thumb=f'{filename}.jpg', caption = f'{filename}', progress=progress)
@@ -73,7 +78,7 @@ async def convert(client, message):
         os.remove(f'{filename}.jpg')
     except:
         print_exc()
-        return await _info.edit('`Bir hata oluştu.`')
+        return await _info.edit('An error has occurred.')
 
-
+print("Bot Started")
 app.run()
